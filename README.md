@@ -1,6 +1,16 @@
 # PIE #
 A tool to infer precondition for OCaml programs.
 
+<b>
+   Please note that we are packaging PIE as an OCaml libary,
+   and it is being moved to <a href="https://github.com/SaswatPadhi/LoopInvGen">
+   LoopInvGen repo</a>.
+   We have moved the core implementation for loop invariant inference,
+   but are working on a C/C++ frontend.
+   Use this repo, only if you need to verify C/C++ programs using PIE.
+   Otherwise, LoopInvGen may be much faster, and easier to use.
+</b>
+
 ## <i class="fa fa-fw fa-cogs" id="setting-up-the-vm"></i> Setting up the VM
 
 1. Download the .ova VM image.

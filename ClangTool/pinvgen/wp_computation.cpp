@@ -122,10 +122,11 @@ PredicateNode wpOfBlock(PredicateNode pred,
                         CFGReverseBlockReachabilityAnalysis *reachables) {
 
   //errs() << "\n   wp of Block B" << block->getBlockID() << "\n";
+  //block->dump();
 
   /* If current block has a loop head */
   for(CFGBlock::const_pred_iterator end_loop = block->pred_begin(), epre = block->pred_end(); end_loop != epre; ++end_loop) {
-    if (dom_tree->dominates(block, *end_loop)) {
+    if (dom_tree->dominates(block, *end_loop) && isReachable(reachables, &(cfg->getEntry()), *end_loop)) {
       CFGBlock *loop_head = block;
       string currentLoopId = loopId;
       errs() << "\n   + Found guard in B" << loop_head->getBlockID() << " for loop #" << currentLoopId << "\n";

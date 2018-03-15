@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/env python
 
 import itertools
 import random
@@ -55,7 +55,7 @@ def ifHuge(l):
     return (l if huge and mode == 'F' else [])
 
 def print_usage():
-    print >>(sys.stderr), ("\npreprocess.py: Adds features.\n\n"
+    sys.stderr.write("\npreprocess.py: Adds features.\n\n"
                            "Usage: preprocess.py source.ml\n\n")
 
 def stringify(obj, top = True):
@@ -133,33 +133,33 @@ def getBinaryPreds(typ1, var1, prop1, typ2, var2, prop2):
 
     preds = []
     if typ1[0][0] == BT and typ2[0][0] == BT:
-        preds.extend(map(lambda (f,n): (f % (var1, '', 'not ' + nvar1[0], ''), n % (nvar1[1], 'false')) if var2 is None else (
-                                        f % (var1, var2+' ', nvar1[0], ' = ' + nvar2[0]), n % (nvar1[1], nvar2[1])),
+        preds.extend(map(lambda args_fn: (args_fn[0] % (var1, '', 'not ' + nvar1[0], ''), args_fn[1] % (nvar1[1], 'false')) if var2 is None else (
+                                        args_fn[0] % (var1, var2+' ', nvar1[0], ' = ' + nvar2[0]), args_fn[1] % (nvar1[1], nvar2[1])),
                          [('(fun %s %s-> %s%s)', '"(%s = %s)"')]))
 
     elif typ1[0][0] == IT and typ2[0][0] == IT:
-        preds.extend(map(lambda (f,n): (f % (var1, '', nvar1[0], '0'), n % (nvar1[1], '0')) if var2 is None else (
-                                        f % (var1, var2+' ', nvar1[0], nvar2[0]), n % (nvar1[1], nvar2[1])),
+        preds.extend(map(lambda args_fn: (args_fn[0] % (var1, '', nvar1[0], '0'), args_fn[1] % (nvar1[1], '0')) if var2 is None else (
+                                        args_fn[0] % (var1, var2+' ', nvar1[0], nvar2[0]), args_fn[1] % (nvar1[1], nvar2[1])),
                          [('(fun %s %s-> %s = %s)', '"(%s = %s)"')]
                          + ifHuge([('(fun %s %s-> %s > %s)', '"(%s > %s)"'),('(fun %s %s-> %s < %s)', '"(%s < %s)"')])))
 #        if var2 is None and mode == 'F':
 #            preds.extend(ifHuge([('(fun %s -> %s mod 2 = 0)' % (var1, nvar1[0]), '"(%s %% 2 = 0)"' % nvar1[1])]))
 
     elif typ1[0][0] == CT and typ2[0][0] == CT and var2 is not None:
-        preds.extend(map(lambda (f,n): (f % (var1, var2+' ', nvar1[0], nvar2[0]), n % (nvar1[1], nvar2[1])),
+        preds.extend(map(lambda args_fn: (args_fn[0] % (var1, var2+' ', nvar1[0], nvar2[0]), args_fn[1] % (nvar1[1], nvar2[1])),
                          [('(fun %s %s-> %s = %s)', '"(%s = %s)"')]
                          + ifHuge([ ('(fun %s %s-> %s < %s)', '"(%s < %s)"')])))
 
     elif typ1[0][0] == ST and typ2[0][0] == ST and var2 is None:
-        preds.extend(map(lambda (f,n): (f % (var1, ' ', nvar1[0], '""'), n % (nvar1[1], '\\"\\"')),
+        preds.extend(map(lambda args_fn: (args_fn[0] % (var1, ' ', nvar1[0], '""'), args_fn[1] % (nvar1[1], '\\"\\"')),
                          [('(fun %s %s-> %s = %s)', '"(#eql(%s, %s))"')]))
 
     elif typ1[0][0] == RT and typ2[0][0] == RT and var2 is None:
-        preds.extend(map(lambda (f,n): (f % (var1, nvar1[0]), n % (nvar1[1])),
+        preds.extend(map(lambda args_fn: (args_fn[0] % (var1, nvar1[0]), args_fn[1] % (nvar1[1])),
                          [('(fun %s -> BatAvlTree.is_empty %s)', '"empty(%s)"')]))
 
     elif typ1[0][0] == LT and typ2[0][0] == LT and var2 is None:
-        preds.extend(map(lambda (f,n): (f % (var1, nvar1[0]), n % (nvar1[1])),
+        preds.extend(map(lambda args_fn: (args_fn[0] % (var1, nvar1[0]), args_fn[1] % (nvar1[1])),
                          [('(fun %s -> %s = [])', '"%s = []"')]))
 
     return preds
@@ -167,7 +167,7 @@ def getBinaryPreds(typ1, var1, prop1, typ2, var2, prop2):
 #### Not used
     if var2 is not None:
         if typ1 == typ2 and typ1[0][0] not in ATOM_TYPES:
-            preds.extend(map(lambda (f,n): (f % (var1, var2+' ', nvar1[0], nvar2[0]), n % (nvar1[1], nvar2[1])),
+            preds.extend(map(lambda args_fn: (args_fn[0] % (var1, var2+' ', nvar1[0], nvar2[0]), args_fn[1] % (nvar1[1], nvar2[1])),
                             [('(fun %s %s-> %s = %s)', '"(%s = %s)"')]))
 
         # Predicates between one variable and elements of the other variable (which is a tuple)
@@ -319,7 +319,7 @@ def Panalyze(pat):
                      ] + ofeatures ) # + iofeatures)
 
 if len(sys.argv) < 2:
-    print >>(sys.stderr), 'Missing argument: OCaml file to be pre-processed.'
+    sys.stderr.write( 'Missing argument: OCaml file to be pre-processed.')
     print_usage()
     sys.exit(1)
 elif len(sys.argv) > 2 and sys.argv[2] == 'ALL':

@@ -38,7 +38,7 @@ if [[ $? != 0 ]]; then
   exit 1
 fi
 
-./preprocess "$FILE.tml" > "T$FILE.ml" 2> /dev/null
+./preprocess "$FILE.tml" > "T$FILE.ml" #2> /dev/null
 
 # Compile OCaml code to binary
 OCAMLRUNPARAM=l=1024M ocamlfind ocamlopt -package qcheck -package batteries -c "T$FILE.ml" 2>/dev/null

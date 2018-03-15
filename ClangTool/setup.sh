@@ -33,4 +33,4 @@ chmod +x check_all_with_config
 
 # We need to make everything, not just pinvgen; because Clang uses so internal
 # headers etc. which are produced after a full make
-cmake .. && make -j4
+cmake .. && make -j16

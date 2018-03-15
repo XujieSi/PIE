@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import sys
 
@@ -14,6 +14,6 @@ if __name__ == '__main__':
                                     + "\n(assert (not goal))"))
 
     if solver.check() == z3.unsat:
-        print "UNSAT"
+        print("UNSAT")
     else:
         print(string_from_z3_model(solver.model()))

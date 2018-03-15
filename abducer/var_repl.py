@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import re
 import sys
@@ -41,4 +41,4 @@ if __name__ == '__main__':
         inp = '\n'.join(fix(l.split(' : ')[1]) for l in sorted((l for l in inp if l.split(' : ')[0][1:-1].isdigit()),
                                                                key=lambda l: int(l.split(' : ')[0][1:-1])))
 
-    print inp
+    print(inp)

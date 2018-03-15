@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import multiprocessing as mp
 import subprocess
 import sys
 
 from time import sleep
-from Queue import Empty
+from queue import Empty
 
 from mcf2smtlib import vars_from_smtlib, smtlib2_string_from_file, substitute_model, \
                        run_CVC4_internal, run_Z3_internal, run_Z3Str2_internal, z3str_to_cvc4, \

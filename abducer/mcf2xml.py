@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import cgi
 import sys
@@ -71,10 +71,18 @@ def toXML(l, i=0):
     return "%s<expr>\n%s\n%s</expr>" % (' ' * i, '\n'.join(toXML(c, i+2) for c in l), ' ' * i)
 
 if __name__ == "__main__":
+    # sys.stderr.write(">>> mcf2xml: sys.argv[0]=%s<<<END\n" % sys.argv[0])
+    # if len(sys.argv) > 1:
+    #     sys.stderr.write(">>> mcf2xml: sys.argv[1]=%s<<<END\n" % sys.argv[1])
+    # if len(sys.argv) > 2:
+    #     sys.stderr.write(">>> mcf2xml: sys.argv[2]=%s<<<END\n" % sys.argv[2])
+
     headless = sys.argv[2] if len(sys.argv) > 2  else "1"
     with open(sys.argv[1]) as f:
        mcf = f.readlines()
     mcf = mcf[0].strip() if headless != "0" else mcf[2].strip()
+    # sys.stderr.write(">>> mcf2xml: %s<<<END\n" % mcf)
+
 
     try:
         print(toXML(pred.parseString(mcf, parseAll=True).asList()))
